@@ -1,0 +1,81 @@
+#!/bin/bash
+export DISPLAY=:0
+export GNOME_DESKTOP_SESSION_ID=0
+# doesnt actually scan anything, just "pretends" to scan and if it finds a user logged in with the name "anonymous" then it will pretend like its geolocating
+# ip and open a google maps window in moscow.
+function main () {
+	(
+	echo "# Getting Netstat"
+	statsnet=$(netstat)
+	echo "# Scanning Netstat!"
+	counter=20
+	echo $counter
+	for i in {1..20}; do
+		echo $counter
+		counter=$(($counter + 1))
+		sleep 0.25
+	done
+	echo "# Found IPs!"
+	counter=40
+	sleep 1.25
+	zenity --info --text "$statsnet" --timeout 5
+	sleep 1.25
+	echo "# Scanning Short-Term Network Connection History"
+	for i in {1..20}; do
+		echo $counter
+		counter=$(($counter + 2))
+		sleep 0.25
+	done
+	echo "# Found IPs!"
+	counter=80
+	sleep 1.25
+	for i in {1..20}; do
+		echo $counter
+		counter=$(($counter + 1))
+		sleep 0.15
+	done
+	echo "# IP Scan Completed Successfully"
+	sleep 1.25
+	checkw
+	sleep 1.25
+	) | zenity --title "EXposer!" --progress --no-cancel --auto-close
+	checkw
+	if [[ $winforesult == "found" ]]; then
+		:
+	else
+		zenity --warning --text "No Foreign Address Found" --timeout 2
+		exit 1
+	fi
+	zenity --warning --text "Foreign Address Found" --timeout 2
+	(
+	counter=0
+	echo "# Geolocating IP!"
+	for i in {1..20}; do
+		echo $counter
+		counter=$(($counter + 5))
+		sleep 0.25
+	done
+	) | zenity --title "EXposer!" --progress --no-cancel --auto-close
+	zenity --warning --text "Latitude\n 55.7698526\n\n Longitude\n 37.59726" --timeout 10
+	zenity --warning --text "Opening in google maps" --timeout 2
+	firefox --kiosk https://www.google.com/maps/@55.7698526,37.59726,19z
+}
+
+function checkw () {
+	winfo=$(w)
+	if [[ "$winfo" =~ anonymous ]]; then
+		echo "# Foreign Connection found"
+		winforesult="found"
+	else
+		echo "# Foreign Connection not found"
+		winforesult="1"
+	fi
+}
+
+
+
+
+
+
+
+main "$@"; exit
