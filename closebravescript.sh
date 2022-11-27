@@ -2,7 +2,18 @@
 directory=$(pwd)
 export DISPLAY=:0
 export GNOME_DESKTOP_SESSION_ID=0
+requirdependancy=("zenity")
+### Checking Depenancies from ^^^^
+for i in "${requirdependancy[@]}"
+do
+	if ! [ -x "$(command -v $i)" ] 
+		then
+		echo "ERROR $i not Installed"
+		exit 1
+fi
+done
 
+function main() {
 file=closebravescript.sh
 ie=1
 
@@ -19,4 +30,6 @@ do
 	let "ie=ie+1"
 	echo "hi"
 done
+}
+main"$@"
 
