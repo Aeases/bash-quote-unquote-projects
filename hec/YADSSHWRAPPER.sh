@@ -3,7 +3,7 @@ export DISPLAY=:0
 export GNOME_DESKTOP_SESSION_ID=0
 path=$(pwd)
 logfile=$path/.ipfinderyad-logfile.log
-rm $logfile
+#rm $logfile
 fkey="$RANDOM"
 screenuuid=$(cat /proc/sys/kernel/random/uuid); screenuuid="ipfinderyad$screenuuid"
 
@@ -203,7 +203,7 @@ handler() {
 	espeak "$1"
 	exit 1
 }
-trap handler "Control C" SIGINT
+trap handler SIGINT
 main "$@"
 echo "$logfile"
 rm $logfile
